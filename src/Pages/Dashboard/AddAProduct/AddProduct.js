@@ -2,10 +2,13 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
     const imageHostKey = process.env.REACT_APP_hostApiKey;
 
     const handleAddProduct = data => {
@@ -22,7 +25,7 @@ const AddProduct = () => {
                 if (imgData.success) {
                     const product = {
                         categoryId: data.categoryId,
-                        modeName: data.modelName,
+                        modelName: data.modelName,
                         resellPrice: data.resellPrice,
                         originalPrice: data.originalPrice,
                         timeUsed: data.timeUsed,
@@ -41,7 +44,7 @@ const AddProduct = () => {
                             battery:data.battery
                         }
                     }
-                    fetch('', {
+                    fetch('http://localhost:5000/products', {
                         method:'POST',
                         headers:{
                             'content-type':'application/json',
@@ -52,6 +55,10 @@ const AddProduct = () => {
                     .then(res => res.json())
                     .then(productData => {
                         console.log(productData);
+                        if(productData.acknowledged){
+                            toast.success('Product uploaded sucessfully');
+                            navigate('/dashboard/myproducts');
+                        }
                     })
                 }
             })
@@ -59,7 +66,7 @@ const AddProduct = () => {
     }
     return (
         <div>
-            <h2 className='text-3xl font-bold text-center my-8'>Add A Product</h2>
+            <h2 className='text-3xl font-bold text-center mt-8'>Add A Product</h2>
             <form onSubmit={handleSubmit(handleAddProduct)} className=" p-8">
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                     <div className="form-control w-full relative">
