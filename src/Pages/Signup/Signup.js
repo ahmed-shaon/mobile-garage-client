@@ -3,34 +3,54 @@ import { useForm } from 'react-hook-form';
 import google from '../../assets/icons/google.svg';
 import facebook from '../../assets/icons/facebook.svg';
 import github from '../../assets/icons/github.svg';
-import { Link } from 'react-router-dom';
-import { AuthContex } from '../../Contex/AuthProvider/AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+import useToken from '../../Hook/useToken';
+import toast from 'react-hot-toast';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const Signup = ({ role, title }) => {
-    const { register, formState: { errors }, handleSubmit } = useForm();
     const [error, setError] = useState('');
-    const {createUser} = useContext(AuthContex);
     const [userEmail, setUserEmail] = useState("");
+    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { createUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const [token] = useToken(userEmail);
+
+
+    if (token) {
+        toast.success("Registration Successful");
+        navigate('/');
+    }
 
     const handleLogin = data => {
         setError("");
         createUser(data.email, data.password)
-        .then(res => {
-            const user = res.user;
-            console.log(user);
-            saveUser(user.email, role)
-        })
-        .catch(err => {
-            setError(err.message);
-            console.log(err)
-        })
+            .then(res => {
+                console.log(res.user);
+                saveUser(data.email, data.name, role)
+            })
+            .catch(err => {
+                setError(err.message);
+                console.log(err)
+            })
     }
 
-    const saveUser = (email, type) =>{
+    const saveUser = (email, name, type) => {
         const user = {
             email,
+            name,
             type
         }
+        axios.post("http://localhost:5000/users", user)
+            .then(res => {
+                console.log(res);
+                if (res.data.acknowledged) {                    
+                    setUserEmail(email);
+                }
+            })
+            .catch(err => console.log(err))
     }
     return (
         <div className='flex justify-center items-center'>
@@ -43,25 +63,25 @@ const Signup = ({ role, title }) => {
                             {errors.email && <p role="alert" className="absolute top-2 right-0 text-red-400 text-xs">{errors.name?.message}</p>}
                         </label>
                         <input {...register("name", { required: "Name is required" })} type="text" placeholder="First & Last Name" className="input input-bordered w-full" />
-                        
+
                     </div>
-                    <div className="form-control w-full relative">
+                    <div className="form-control w-full">
                         <label className="label">
                             <span className="label-text">Email</span>
                             {errors.email && <p role="alert" className="absolute top-2 right-0 text-red-400 text-xs">{errors.email?.message}</p>}
                         </label>
-                        <input {...register("email", { required: "Email is required" })} type="text" placeholder="Email" className="input input-bordered w-full" />                        
+                        <input {...register("email", { required: "Email is required" })} type="text" placeholder="Email" className="input input-bordered w-full" />
                     </div>
                     <div className="form-control w-full relative">
                         <label className="label">
                             <span className="label-text">Password</span>
-                            {errors.password && errors.password?.message.length< 30 && <p role="alert" className="text-red-400 absolute top-2 right-0 text-xs">{errors.password?.message}</p>}
+                            {errors.password && errors.password?.message.length < 30 && <p role="alert" className="text-red-400 absolute top-2 right-0 text-xs">{errors.password?.message}</p>}
                         </label>
-                        <input {...register("password", { required: true, minLength: {value:6, message:'password atleast 6 characters'}, pattern:{value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, message:"password must have uppercase, number and special character"}} )} type="password" placeholder="Password" className="input input-bordered w-full" /> 
-                        {errors.password && errors.password?.message.length> 30 && <p role="alert" className="text-red-400 absolute top-20 text-xs">{errors.password?.message} </p>}                                              
+                        <input {...register("password", { required: true, minLength: { value: 6, message: 'password atleast 6 characters' }, pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, message: "password must have uppercase, number and special character" } })} type="password" placeholder="Password" className="input input-bordered w-full" />
+                        {errors.password && errors.password?.message.length > 30 && <p role="alert" className="text-red-400 absolute top-20 text-xs">{errors.password?.message} </p>}
                     </div>
-                    {error && <p className='text-red-400'>{error}</p>}
-                    <div className='py-8'>
+                    <div className='py-8 relative'>
+                        {error && <p className='text-red-400 absolute top-0'>{error.split('/')[1].split(')')[0]}</p>}
                         <input type="submit" className="btn btn-primary w-full" value="Sign up" />
                     </div>
                 </form>

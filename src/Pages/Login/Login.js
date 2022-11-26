@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import facebook from '../../assets/icons/facebook.svg';
 import google from '../../assets/icons/google.svg';
 import github from '../../assets/icons/github.svg';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useToken from '../../Hook/useToken';
 
 
 const Login = () => {
     const [error, setError] = useState('');
+    const {user, userLogin}  = useContext(AuthContext);
     const {register, formState:{errors}, handleSubmit} = useForm();
+    const navigate= useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+    const [userEmail, setUserEmail] = useState("");
+    const [token] = useToken(userEmail);
+    
+    if(token){
+        navigate(from, { replace: true });        
+    }
 
     const handleLogin = data => {
-        console.log(data);
+        setError("");
+        userLogin(data.email, data.password)
+        .then(res => {
+            const user= res.user;
+            console.log(user);
+            setUserEmail(data.email)            
+        })
+        .catch(error => {
+            console.log(error);
+            setError(error.message);            
+        })
     }
     return (
         <div className='flex justify-center items-center h-[700px]'>
@@ -34,7 +56,7 @@ const Login = () => {
                         <label className="label justify-end">
                             <button><span className="label-text-alt hover:text-gray-900">Forget Password?</span></button>
                         </label>
-                        {error && <p className='text-red-400'>{error}</p>}                        
+                        {error && <p className='text-red-400 absolute bottom-4'>{error.split("/")[1].split(")")[0]}</p>}                        
                     </div>                    
                     <div className='my-3'>
                         <input type="submit" className="btn btn-primary w-full" value="Sign in" />
