@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import Main from "../../Layout/Main";
 import SignupLayout from "../../Layout/SignupLayout";
+import AddProduct from "../../Pages/Dashboard/AddAProduct/AddProduct";
 import AllBuyers from "../../Pages/Dashboard/AllBuyers/AllBuyers";
 import AllSellers from "../../Pages/Dashboard/AllSellers/AllSellers";
 import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
@@ -10,7 +11,6 @@ import MyWishList from "../../Pages/Dashboard/MyWishList/MyWishList";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
 import ErrorPage from "../../Pages/Shared/ErrorPage/ErrorPage";
-import SignupOption from "../../Pages/Signup/SignupOption";
 import SignupSeller from "../../Pages/Signup/SignupSeller";
 import SignupUser from "../../Pages/Signup/SignupUser";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
@@ -67,6 +67,10 @@ export const router = createBrowserRouter([
                 element:<MyWishList></MyWishList>
             },
             {
+                path:'/dashboard/addaproduct',
+                element:<AddProduct></AddProduct>
+            },
+            {
                 path:'/dashboard/allseller',
                 element:<AllSellers></AllSellers>
             },
@@ -74,10 +78,7 @@ export const router = createBrowserRouter([
                 path:'/dashboard/allbuyer',
                 element:<AllBuyers></AllBuyers>
             },
-            {
-                path:'/dashboard',
-                element:<Dashboard></Dashboard>
-            },
+            
         ]
     }
     

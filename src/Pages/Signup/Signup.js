@@ -43,6 +43,7 @@ const Signup = ({ role, title }) => {
             name,
             type
         }
+        console.log(user);
         axios.post("http://localhost:5000/users", user)
             .then(res => {
                 console.log(res);
