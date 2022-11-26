@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
+const activeStyle = {
+    textDecoration:'underline'
+}
 const Navbar = () => {
     const { user, userLogout } = useContext(AuthContext);
 
@@ -11,15 +14,16 @@ const Navbar = () => {
             .catch(error => console.log(error))
     }
     const navItem = <>
-        <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><NavLink style={({isActive}) => isActive ? activeStyle : undefined} to="/">Home</NavLink></li>
+        <li><NavLink style={({isActive}) => isActive ? activeStyle : undefined} to="/dashboard">Dashboard</NavLink></li>
         {
             user?.uid ? <li><button onClick={handleSignout}>Sign out</button></li>
-                : <li><Link to='/signin'>Sign in</Link></li>
+                : <li><NavLink to='/signin'>Sign in</NavLink></li>
         }
 
     </>
     return (
-        <div className="navbar bg-primary text-white font-semibold flex justify-between">
+        <div className="navbar bg-primary text-white text-bold font-semibold flex justify-between">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -31,7 +35,7 @@ const Navbar = () => {
                         }
                     </ul>
                 </div>
-                <Link to='/' className="btn btn-ghost normal-case text-xl">MobileGarage</Link>
+                <NavLink to='/' className="btn btn-ghost normal-case text-xl">MobileGarage</NavLink>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">

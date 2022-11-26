@@ -11,8 +11,6 @@ const DashboardLayout = () => {
     const [isAdmin, isAdminLoading] = useAdmin(user?.email);
     const [isSeller, isSellerLoading] = useSeller(user?.email);
 
-    console.log('admin', isAdmin)
-    console.log('seller', isSeller)
 
     if (isAdminLoading || isSellerLoading) {
         return <Loading></Loading>
@@ -30,21 +28,21 @@ const DashboardLayout = () => {
                     <ul className="menu p-4 w-80 bg-base-100 text-base-content">
                         {
                             !isSeller && !isAdmin && <>
-                                <li><Link to="/myorders">My Orders</Link></li>
-                                <li><Link to="/mywishlist">My WishList</Link></li>
+                                <li><Link to="/dashboard/myorders">My Orders</Link></li>
+                                <li><Link to="/dashboard/mywishlist">My WishList</Link></li>
                             </>
                         }
                         {
                             isSeller && <>
-                                <li><Link to="/addaproduct">Add A Product</Link></li>
-                                <li><Link to="/myproducts">My Products</Link></li>
+                                <li><Link to="/dashboard/addaproduct">Add A Product</Link></li>
+                                <li><Link to="/dashboard/myproducts">My Products</Link></li>
                             </>
                         }
                         {
                             isAdmin && <>
-                                <li><Link to="/allsellers">All Sellers</Link></li>
-                                <li><Link to="/allbuyers">All Buyers</Link></li>
-                                <li><Link to="/reporteditem">Reported Item</Link></li>
+                                <li><Link to="/dashboard/allseller">All Sellers</Link></li>
+                                <li><Link to="/dashboard/allbuyer">All Buyers</Link></li>
+                                <li><Link to="/dashboard/reporteditem">Reported Item</Link></li>
                             </>
                         }
                     </ul>

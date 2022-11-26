@@ -5,9 +5,7 @@ const SignupSeller = () => {
 
     return (
         <div>
-            <Signup role={"seller"}
-            title={"Seller"}
-            ></Signup>
+            <Signup role={"seller"} title={"Seller"}></Signup>
         </div>
     );
 };

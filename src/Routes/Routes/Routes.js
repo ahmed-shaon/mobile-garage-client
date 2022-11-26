@@ -2,9 +2,14 @@ import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import Main from "../../Layout/Main";
 import SignupLayout from "../../Layout/SignupLayout";
+import AllBuyers from "../../Pages/Dashboard/AllBuyers/AllBuyers";
+import AllSellers from "../../Pages/Dashboard/AllSellers/AllSellers";
 import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
+import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
+import MyWishList from "../../Pages/Dashboard/MyWishList/MyWishList";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
+import ErrorPage from "../../Pages/Shared/ErrorPage/ErrorPage";
 import SignupOption from "../../Pages/Signup/SignupOption";
 import SignupSeller from "../../Pages/Signup/SignupSeller";
 import SignupUser from "../../Pages/Signup/SignupUser";
@@ -14,6 +19,7 @@ export const router = createBrowserRouter([
     {
         path:'/',
         element:<Main></Main>,
+        errorElement:<ErrorPage></ErrorPage>,
         children:[
             {
                 path:'/',
@@ -46,6 +52,7 @@ export const router = createBrowserRouter([
     {
         path:'/dashboard',
         element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        errorElement:<ErrorPage></ErrorPage>,
         children:[
             {
                 path:'/dashboard',
@@ -53,19 +60,19 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/dashboard/myorders',
-                element:<Dashboard></Dashboard>
+                element:<MyOrders></MyOrders>
             },
             {
-                path:'/dashboard',
-                element:<Dashboard></Dashboard>
+                path:'/dashboard/mywishlist',
+                element:<MyWishList></MyWishList>
             },
             {
-                path:'/dashboard',
-                element:<Dashboard></Dashboard>
+                path:'/dashboard/allseller',
+                element:<AllSellers></AllSellers>
             },
             {
-                path:'/dashboard',
-                element:<Dashboard></Dashboard>
+                path:'/dashboard/allbuyer',
+                element:<AllBuyers></AllBuyers>
             },
             {
                 path:'/dashboard',
