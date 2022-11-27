@@ -5,7 +5,7 @@ const CategoryItem = ({category}) => {
     const {name, categoryId} = category;
     return (
         <div>
-            <button className='btn btn-outline text-center w-full'><Link to={`/category/${categoryId}`}>{name}</Link></button>
+            <Link className='btn btn-outline text-center w-full' to={`/category/${categoryId}`}>{name}</Link>
         </div>
     );
 };
