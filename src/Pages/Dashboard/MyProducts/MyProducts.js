@@ -13,7 +13,7 @@ const MyProducts = () => {
     const {user} = useContext(AuthContext);
 
     const {data: products = [], isLoading, refetch} = useQuery({
-        queryKey:[],
+        queryKey:['products'],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/products?email=${user?.email}`, {
                 headers:{

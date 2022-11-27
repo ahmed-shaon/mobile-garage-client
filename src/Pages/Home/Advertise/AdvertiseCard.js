@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AdvertiseProduct = () => {
+const AdvertiseCard = ({product}) => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const AdvertiseProduct = () => {
     );
 };
 
-export default AdvertiseProduct;
+export default AdvertiseCard;

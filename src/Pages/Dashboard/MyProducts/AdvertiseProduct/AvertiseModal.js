@@ -1,8 +1,38 @@
+import axios from 'axios';
 import React from 'react';
+import toast from 'react-hot-toast';
 
 const AvertiseModal = ({product, setProduct}) => {
-
+    const {_id, modelName, image,  resellPrice, location, timeUsed,email, categoryId } = product;
     const handleAdvertiseProduct = () => {
+        const advertiseProduct = {
+            modelName,
+            image,
+            price:resellPrice,
+            feature:product.specificatons,
+            advertiseId:_id,
+            location,
+            timeUsed,
+            email,
+            categoryId
+        }
+        console.log(advertiseProduct);
+        axios.post(`http://localhost:5000/advertise?id=${_id}`,advertiseProduct,{
+            headers:{
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(res => {
+            console.log(res.data);
+            if(res.data.acknowledged){
+                setProduct(null);
+                toast.success("Your request for advertising is successfull");
+            }
+            else{
+                toast.error(res.data.message);
+                setProduct(null);
+            }
+        })
 
     }
     return (
