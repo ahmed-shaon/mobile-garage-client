@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import BookingModal from '../BookingModal/BookingModal';
 
 const Product = ({ product }) => {
+    const {user} = useContext(AuthContext);
+    const [openModal, setOpenModal] = useState(true);
     const { modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed } = product;
-    console.log(product)
     const {ram, storage, color, battery} = product.specificatons;
     return (
         <div>
@@ -24,8 +27,15 @@ const Product = ({ product }) => {
                     <p>Seller Name: <span className='font-bold'>{sellerName}</span></p>
                     <p>Posted Time: <span className='font-bold'>{timeOfPost}</span></p>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Book Now</button>
+                        <label htmlFor="my-modal" className="btn btn-primary">Book Now</label>
                     </div>
+                    {
+                        openModal && <BookingModal
+                        product={product}
+                        setOpenModal={setOpenModal}
+                        user={user}
+                        ></BookingModal>
+                    }
                 </div>
             </div>
         </div>

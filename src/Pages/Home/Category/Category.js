@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import Loading from '../../Shared/Loading/Loading';
 import CategoryItem from './CategoryItem';
 
 const Category = () => {
@@ -11,6 +12,9 @@ const Category = () => {
             return data;
         }
     })
+    if(isLoading){
+        return <Loading></Loading>
+    }
     return (
         <div className='my-12 lg:px-20'>
             <h2 className='text-2xl font-bold text-center my-8'>Categories</h2>
