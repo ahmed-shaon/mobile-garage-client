@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
+import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
 import Loading from '../../Shared/Loading/Loading';
@@ -23,6 +24,27 @@ const MyOrders = () => {
 
     if (isLoading) {
         <Loading></Loading>
+    }
+
+    const handleDeleteOrder = itemId => {
+        console.log(itemId)
+        fetch(`http://localhost:5000/order?id=${itemId}`, {
+            method:'DELETE',
+            headers:{
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(res => res.json())
+        .then(resData => {
+            console.log(resData);
+            if(resData.deletedCount>0){
+                toast.success('Successfully deleted one item of order!!');
+                refetch();
+                setCloseModal(false);
+            }
+        })
+        .catch(error => console.log(error));
+
     }
 
 
@@ -62,8 +84,7 @@ const MyOrders = () => {
             {
                 closeModal && <ConfirmModal
                 itemId = {orderId}
-                setCloseModal={setCloseModal}
-                refetch={refetch}
+                handleDeleteItem={handleDeleteOrder}
                 ></ConfirmModal>
             }
         </div>
