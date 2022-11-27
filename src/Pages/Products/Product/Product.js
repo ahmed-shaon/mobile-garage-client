@@ -1,12 +1,38 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import BookingModal from '../BookingModal/BookingModal';
+import heart from '../../../assets/icons/heart.png';
+import heart2 from '../../../assets/icons/heart.svg';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Product = ({ product }) => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [openModal, setOpenModal] = useState(true);
-    const { modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed } = product;
-    const {ram, storage, color, battery} = product.specificatons;
+    const { _id, modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed } = product;
+    const { ram, storage, color, battery } = product.specificatons;
+    const handleWishList = () => {
+        const wishProduct = {
+            productId:_id,
+            productName:modelName,
+            image,
+            price:resellPrice
+        }
+        axios.post(`http://localhost:5000/wishlist`, wishProduct,{
+            headers:{
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(res => {
+            console.log(res.data);
+            if(res.data.acknowledged){
+                toast.success('Added to wish list!!');
+            }
+            else{
+                toast.error(res.data.message);
+            }
+        })
+    }
     return (
         <div>
             <div className="card card-compact bg-base-100 shadow-xl">
@@ -26,14 +52,18 @@ const Product = ({ product }) => {
                     <p>Time Used: <span className='font-bold'>{timeUsed} months</span></p>
                     <p>Seller Name: <span className='font-bold'>{sellerName}</span></p>
                     <p>Posted Time: <span className='font-bold'>{timeOfPost}</span></p>
-                    <div className="card-actions justify-end">
+                    <div className="card-actions justify-between items-center">
+                        <div className='flex items-center text-[16px] hover:underline hover:bg-gray-300 p-1'>
+                            <img className='w-8 h-8' src={heart} alt="" />
+                            <button onClick={handleWishList}>Add to Wish List</button>
+                        </div>
                         <label htmlFor="my-modal" className="btn btn-primary">Book Now</label>
                     </div>
                     {
                         openModal && <BookingModal
-                        product={product}
-                        setOpenModal={setOpenModal}
-                        user={user}
+                            product={product}
+                            setOpenModal={setOpenModal}
+                            user={user}
                         ></BookingModal>
                     }
                 </div>

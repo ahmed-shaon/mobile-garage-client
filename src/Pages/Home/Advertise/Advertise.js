@@ -5,7 +5,7 @@ import AdvertiseCard from './AdvertiseCard';
 
 const Advertise = () => {
     const { data: advertiseProducts = [], isLoading } = useQuery({
-        queryKey: [],
+        queryKey: ['advertise'],
         queryFn: async () => {
             const res = await fetch("http://localhost:5000/advertise");
             const data = await res.json();
@@ -15,17 +15,16 @@ const Advertise = () => {
     if (isLoading) {
         return <Loading></Loading>
     }
-    console.log(advertiseProducts)
     return (
-        <div>
+        <div className='my-12 lg:my-24'>
             {
-                advertiseProducts.length > 0 && <div>
-                    <h2 className='text-3xl fond-bold text-secondary text-center'>Advertise of Products</h2>
-                    <div>
+                advertiseProducts.length > 0 && <div className='px-4 lg:px-20'>
+                    <h2 className='text-3xl fond-bold text-secondary text-center my-8'>Advertise of Products</h2>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
                         {
-                            advertiseProducts.map(product => <AdvertiseCard
-                            key={product._id}
-                            product={product}
+                            advertiseProducts.map(advertiseProduct => <AdvertiseCard
+                            key={advertiseProduct._id}
+                            advertiseProduct={advertiseProduct}
                             ></AdvertiseCard>)
                         }
                     </div>
