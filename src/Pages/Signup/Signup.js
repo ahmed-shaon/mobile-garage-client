@@ -4,17 +4,15 @@ import google from '../../assets/icons/google.svg';
 import facebook from '../../assets/icons/facebook.svg';
 import github from '../../assets/icons/github.svg';
 import { Link, useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
 import useToken from '../../Hook/useToken';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const Signup = ({ role, title }) => {
+    const { createUser, updateUserProfile } = useContext(AuthContext);
     const [error, setError] = useState('');
     const [userEmail, setUserEmail] = useState("");
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const { createUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const [token] = useToken(userEmail);
 
@@ -24,12 +22,18 @@ const Signup = ({ role, title }) => {
         navigate('/');
     }
 
-    const handleLogin = data => {
+    const handleSignup = data => {
         setError("");
         createUser(data.email, data.password)
             .then(res => {
-                console.log(res.user);
-                saveUser(data.email, data.name, role)
+                console.log("user created");
+                const profile ={displayName:data.name};
+                updateUserProfile(profile)
+                .then(res =>{
+                    console.log("user updated");
+                    saveUser(data.email, data.name, role);
+                })
+                .catch(err => console.log(err))
             })
             .catch(err => {
                 setError(err.message);
@@ -37,27 +41,41 @@ const Signup = ({ role, title }) => {
             })
     }
 
-    const saveUser = (email, name, type) => {
-        const user = {
-            email,
-            name,
-            type
-        }
+    const saveUser = async(email, name, type) => {
+        const user = { email, name, type }
         console.log(user);
-        axios.post("http://localhost:5000/users", user)
-            .then(res => {
-                console.log(res);
-                if (res.data.acknowledged) {                    
-                    setUserEmail(email);
-                }
-            })
-            .catch(err => console.log(err))
+        fetch('http://localhost:5000/users', {
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(userData => {
+            console.log(userData);
+            if(userData.acknowledged){
+                setUserEmail(email);
+            }
+        })
+
+        console.log('api called');
+        // axios.post("http://localhost:5000/users", user)
+        //     .then(res => {
+        //         console.log(res);
+        //         if (res.data.acknowledged) {                    
+        //             setUserEmail(email);
+        //         }
+        //     })
+        //     .catch(err => console.log(err))
     }
+
+
     return (
         <div className='flex justify-center items-center'>
             <div className=' shadow-xl rounded-xl p-8'>
                 <h2 className='text-3xl font-bold text-center mb-3'>Sign up as {title}</h2>
-                <form onSubmit={handleSubmit(handleLogin)} className='w-[280px] lg:w-[300px]'>
+                <form onSubmit={handleSubmit(handleSignup)} className='w-[280px] lg:w-[300px]'>
                     <div className="form-control w-full relative">
                         <label className="label">
                             <span className="label-text">Name</span>

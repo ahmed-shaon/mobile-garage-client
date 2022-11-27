@@ -11,6 +11,7 @@ import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
 import MyWishList from "../../Pages/Dashboard/MyWishList/MyWishList";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
+import Products from "../../Pages/Products/Products/Products";
 import ErrorPage from "../../Pages/Shared/ErrorPage/ErrorPage";
 import SignupSeller from "../../Pages/Signup/SignupSeller";
 import SignupUser from "../../Pages/Signup/SignupUser";
@@ -47,6 +48,11 @@ export const router = createBrowserRouter([
                         element:<SignupSeller></SignupSeller>
                     }
                 ]
+            },
+            {
+                path:'/category/:id',
+                element:<Products></Products>,
+                
             }
         ]
     },

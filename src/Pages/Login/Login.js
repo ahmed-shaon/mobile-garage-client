@@ -10,12 +10,12 @@ import useToken from '../../Hook/useToken';
 
 const Login = () => {
     const [error, setError] = useState('');
-    const {user, userLogin}  = useContext(AuthContext);
+    const [userEmail, setUserEmail] = useState("");
+    const {userLogin}  = useContext(AuthContext);
     const {register, formState:{errors}, handleSubmit} = useForm();
     const navigate= useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
-    const [userEmail, setUserEmail] = useState("");
     const [token] = useToken(userEmail);
     
     if(token){

@@ -1,36 +1,55 @@
 import React from 'react';
+import img1 from '../../../assets/images/img-1.jpg';
+import img2 from '../../../assets/images/img-2.jpg';
+import img3 from '../../../assets/images/img-3.png';
+import img4 from '../../../assets/images/img-4.jpg';
+import BannerItem from './BannerItem';
 
+
+const carousel = [
+    {
+        id:1,
+        img:img1,
+        title:"Get your happiness with us. Get your gadget in your budget",
+        description:"Our demand is your happiness. Get your desire in your range of effort. Take your gadget from us.",
+        pre:4,
+        next:2
+    },
+    {
+        id:2,
+        img:img2,
+        title:"Get your happiness with us. Get your gadget in your budget",
+        description:"Our demand is your happiness. Get your desire in your range of effort. Take your gadget from us.",
+        pre:1,
+        next:3
+    },
+    {
+        id:3,
+        img:img3,
+        title:"Get your happiness with us. Get your gadget in your budget",
+        description:"Our demand is your happiness. Get your desire in your range of effort. Take your gadget from us.",
+        pre:2,
+        next:4
+    },
+    {
+        id:4,
+        img:img4,
+        title:"Get your happiness with us. Get your gadget in your budget",
+        description:"Our demand is your happiness. Get your desire in your range of effort. Take your gadget from us.",
+        pre:3,
+        next:1
+    },
+    
+]
 const Banner = () => {
     return (
-        <div className="carousel w-full">
-            <div id="slide1" className="carousel-item relative w-full">
-                <img src="https://support.apple.com/library/content/dam/edam/applecare/images/en_US/iphone/iphone-14-pro-max-colors.png" className="w-full" />
-                <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                    <a href="#slide4" className="btn btn-circle">❮</a>
-                    <a href="#slide2" className="btn btn-circle">❯</a>
-                </div>
-            </div>
-            <div id="slide2" className="carousel-item relative w-full">
-                <img src="https://placeimg.com/800/200/arch" className="w-full" />
-                <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                    <a href="#slide1" className="btn btn-circle">❮</a>
-                    <a href="#slide3" className="btn btn-circle">❯</a>
-                </div>
-            </div>
-            <div id="slide3" className="carousel-item relative w-full">
-                <img src="https://placeimg.com/800/200/arch" className="w-full" />
-                <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                    <a href="#slide2" className="btn btn-circle">❮</a>
-                    <a href="#slide4" className="btn btn-circle">❯</a>
-                </div>
-            </div>
-            <div id="slide4" className="carousel-item relative w-full">
-                <img src="https://placeimg.com/800/200/arch" className="w-full" />
-                <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                    <a href="#slide3" className="btn btn-circle">❮</a>
-                    <a href="#slide1" className="btn btn-circle">❯</a>
-                </div>
-            </div>
+        <div className="carousel w-full relative">
+            {
+                carousel.map(item => <BannerItem
+                key={item.id}
+                item={item}
+                ></BannerItem>)
+            }
         </div>
     );
 };
