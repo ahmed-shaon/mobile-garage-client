@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import toast from 'react-hot-toast';
 
-const BookingModal = ({ product, setOpenModal, user }) => {
+const BookingModal = ({ product, setOpenModal, user, setBook }) => {
+    
     const { _id, modelName, originalPrice } = product;
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -13,21 +14,25 @@ const BookingModal = ({ product, setOpenModal, user }) => {
             userName: data.name,
             productName: data.modelName,
             price:data.price,
-            email: data.email,
+            email: user?.email,
             location: data.location,
             number: data.number,
             productId: _id
         }
         console.log(order);
-        axios.post("",order,{
+        axios.post("http://localhost:5000/order",order,{
             headers:{
                 authorization:`bearer ${localStorage.getItem('accessToken')}`
             }
         })
         .then(res => {
-            console.log(res.data);
+            console.log(res);
+            if(res.data.acknowledged){
+                toast.success('Your Booking is confirmed.');
+                setOpenModal(false)
+            }
         })
-        setOpenModal(false)
+        .catch(err => console.log(err))
     }
     return (
         <div>
@@ -77,7 +82,7 @@ const BookingModal = ({ product, setOpenModal, user }) => {
                             <input {...register("number", { required: 'Field Required' })} type="text" name="number" placeholder="Your Nubmer" className="input input-bordered w-full " />
                         </div>
                         <div className='my-4 flex justify-center'>
-                            <input type="submit" className='btn btn-accent mr-2' value="Submit" />
+                            <input type="submit" className='btn btn-accent mr-2 disabled' value="Submit" />
                             <label htmlFor="my-modal" className="btn btn-error">Cancle</label>
                         </div>
                     </form>
