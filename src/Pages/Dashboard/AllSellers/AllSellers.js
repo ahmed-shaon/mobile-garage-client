@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
 import Loading from '../../Shared/Loading/Loading';
 
 const AllSellers = () => {
-
+    const [sellerId, setSellerId] = useState("");
+    const [closeModal, setCloseModal] = useState(true);
     const { data: sellers = [], isLoading, refetch } = useQuery({
         queryKey: ['seller'],
         queryFn: async () => {
@@ -22,6 +24,7 @@ const AllSellers = () => {
         return <Loading></Loading>
     }
     const handleDeleteSeller = id => {
+        
         fetch(`http://localhost:5000/users?id=${id}`, {
             method: 'DELETE',
             headers: {
@@ -30,11 +33,12 @@ const AllSellers = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.deletedCount > 0) {
                     toast.success('seller Deleted Successfully');
+                    setCloseModal(false);
                     refetch();
                 }
+                // setCloseModal(true);
             })
     }
     return (
@@ -57,7 +61,8 @@ const AllSellers = () => {
                                     <th>{i + 1}</th>
                                     <td>{seller.name}</td>
                                     <td>{seller.email}</td>
-                                    <td><button onClick={() => handleDeleteSeller(seller._id)} className='btn btn-sm btn-error'>Delete</button></td>
+                                    <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={()=> setSellerId(seller._id)}>Delete</label>
+                                    </td>
                                 </tr>
 
                             )
@@ -65,6 +70,12 @@ const AllSellers = () => {
                     </tbody>
                 </table>
             </div>
+            {
+                closeModal && <ConfirmModal
+                    itemId={sellerId}
+                    handleDeleteItem={handleDeleteSeller}
+                ></ConfirmModal>
+            }
         </div>
     );
 };

@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../Hook/useToken';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import Loading from '../Shared/Loading/Loading';
 
 const Signup = ({ role, title }) => {
     const { createUser, updateUserProfile } = useContext(AuthContext);
@@ -14,8 +15,11 @@ const Signup = ({ role, title }) => {
     const [userEmail, setUserEmail] = useState("");
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const [token] = useToken(userEmail);
+    const [token, isTokenLoading] = useToken(userEmail);
 
+    // if(isTokenLoading){
+    //     return <Loading></Loading>
+    // }
 
     if (token) {
         toast.success("Registration Successful");

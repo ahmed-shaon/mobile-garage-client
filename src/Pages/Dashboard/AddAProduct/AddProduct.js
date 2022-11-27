@@ -79,7 +79,7 @@ const AddProduct = () => {
                             <option value={"02"}>Samsung</option>
                             <option value={"03"}>Infinix</option>
                             <option value={"04"}>Oppo</option>
-                            <option value={"05"}>Xaomi</option>
+                            <option value={"05"}>Xiaomi</option>
                         </select>
                     </div>
                     <div className="form-control w-full relative">

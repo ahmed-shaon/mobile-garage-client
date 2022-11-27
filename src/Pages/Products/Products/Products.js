@@ -8,7 +8,7 @@ const Products = () => {
         <div className='my-8 lg:my-12 px-4 lg:px-20'>
             {
                 products.length > 0 ? <>
-                    <h2 className='text-3xl font-bold text-center mb-8'>Products of Apple</h2>
+                    <h2 className='text-3xl font-bold text-center mb-8'>Products</h2>
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                         {
                             products.map(product => <Product

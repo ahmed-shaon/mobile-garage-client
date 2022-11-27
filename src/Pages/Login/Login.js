@@ -6,6 +6,7 @@ import google from '../../assets/icons/google.svg';
 import github from '../../assets/icons/github.svg';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import useToken from '../../Hook/useToken';
+import Loading from '../Shared/Loading/Loading';
 
 
 const Login = () => {
@@ -16,7 +17,11 @@ const Login = () => {
     const navigate= useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
-    const [token] = useToken(userEmail);
+    const [token, isTokenLoading] = useToken(userEmail);
+
+    // if(isTokenLoading){
+    //     return <Loading></Loading>
+    // }
     
     if(token){
         navigate(from, { replace: true });        

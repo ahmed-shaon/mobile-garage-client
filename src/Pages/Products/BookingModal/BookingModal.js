@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const BookingModal = ({ product, setOpenModal, user, setBook }) => {
     
-    const { _id, modelName, originalPrice } = product;
+    const { _id, modelName, originalPrice,image } = product;
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleBookOrder = data => {
@@ -17,7 +17,8 @@ const BookingModal = ({ product, setOpenModal, user, setBook }) => {
             email: user?.email,
             location: data.location,
             number: data.number,
-            productId: _id
+            productId: _id,
+            image
         }
         console.log(order);
         axios.post("http://localhost:5000/order",order,{

@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
 import Loading from '../../Shared/Loading/Loading';
 
 const AllBuyers = () => {
+    const [buyerId, setBuyerId] = useState("");
+    const [closeModal, setCloseModal] = useState(true);
     const { data: buyers = [], isLoading, refetch } = useQuery({
         queryKey: ['buyer'],
         queryFn: async () => {
@@ -30,9 +33,9 @@ const AllBuyers = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.deletedCount > 0) {
                     toast.success('User Deleted Successfully');
+                    setCloseModal(false);
                     refetch();
                 }
             })
@@ -57,7 +60,8 @@ const AllBuyers = () => {
                                     <th>{i + 1}</th>
                                     <td>{buyer.name}</td>
                                     <td>{buyer.email}</td>
-                                    <td><button onClick={() =>handleDeleteBuyers(buyer._id)} className='btn btn-sm btn-error'>Delete</button></td>
+                                    <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={() => setBuyerId(buyer._id)}>Delete</label>
+                                    </td>
                                 </tr>
 
                             )
@@ -65,6 +69,12 @@ const AllBuyers = () => {
                     </tbody>
                 </table>
             </div>
+            {
+                closeModal && <ConfirmModal
+                    itemId={buyerId}
+                    handleDeleteItem={handleDeleteBuyers}
+                ></ConfirmModal>
+            }
         </div>
     );
 };

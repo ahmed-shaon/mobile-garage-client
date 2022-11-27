@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
 import Loading from '../../Shared/Loading/Loading';
+import AvertiseModal from './AdvertiseProduct/AvertiseModal';
 
 const MyProducts = () => {
+    const [productId, setProductId] = useState("");
+    const [product, setProduct] = useState(null);
+    const [closeModal, setCloseModal] = useState(true);
     const {user} = useContext(AuthContext);
 
     const {data: products = [], isLoading, refetch} = useQuery({
@@ -34,6 +39,7 @@ const MyProducts = () => {
         .then(data => {
             if(data.deletedCount>0){
                 toast.success('Deleted Product Successfully.');
+                setCloseModal(false);
                 refetch();
             }
         })
@@ -61,13 +67,28 @@ const MyProducts = () => {
                                 <td>{product.modelName}</td>
                                 <td>{product.resellPrice}</td>
                                 <td>{product.status === 'sold' ? <span>Sold</span>: <span className='text-primary'>Available</span>}</td>
-                                <td>{product.status !== 'sold' && <button className='btn btn-sm btn-secondary text-white'>adertise</button>}</td>
-                                <td><button onClick={() => handleProductDelete(product._id)} className='btn btn-sm btn-error'>Delete</button></td>
+                                <td>{product.status !== 'sold' && <label htmlFor="avertise-modal" className="btn btn-sm btn-secondary text-white" onClick={() => setProduct(product)}>adertise</label>}</td>
+                                <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={() => {
+                                    setProductId(product._id)
+                                    setCloseModal(true)
+                                }}>Delete</label></td>
                             </tr>)
                         }                        
                     </tbody>
                 </table>
             </div>
+            {
+                closeModal && <ConfirmModal
+                itemId={productId}
+                handleDeleteItem={handleProductDelete}
+                ></ConfirmModal>
+            }
+            {
+                product && <AvertiseModal
+                product={product}
+                setProduct={setProduct}
+                ></AvertiseModal>
+            }
         </div>
     );
 };

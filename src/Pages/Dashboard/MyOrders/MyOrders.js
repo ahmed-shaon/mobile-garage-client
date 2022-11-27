@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import Product from '../../Products/Product/Product';
 import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
 import Loading from '../../Shared/Loading/Loading';
 
@@ -29,21 +30,21 @@ const MyOrders = () => {
     const handleDeleteOrder = itemId => {
         console.log(itemId)
         fetch(`http://localhost:5000/order?id=${itemId}`, {
-            method:'DELETE',
-            headers:{
-                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(res => res.json())
-        .then(resData => {
-            console.log(resData);
-            if(resData.deletedCount>0){
-                toast.success('Successfully deleted one item of order!!');
-                refetch();
-                setCloseModal(false);
-            }
-        })
-        .catch(error => console.log(error));
+            .then(res => res.json())
+            .then(resData => {
+                console.log(resData);
+                if (resData.deletedCount > 0) {
+                    toast.success('Successfully deleted one item of order!!');
+                    refetch();
+                    setCloseModal(false);
+                }
+            })
+            .catch(error => console.log(error));
 
     }
 
@@ -56,10 +57,12 @@ const MyOrders = () => {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Produc tName</th>
+                            <th>Product Image</th>
+                            <th>Product Name</th>
                             <th>Price</th>
                             <th>Meet Point</th>
                             <th>Number</th>
+                            <th>Pay</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -68,10 +71,20 @@ const MyOrders = () => {
                             orders.map((order, i) =>
                                 <tr key={order._id}>
                                     <th>{i + 1}</th>
+                                    <th>
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle w-12 h-12">
+                                                <img src={order.image} alt="Avatar Tailwind CSS Component" />
+                                            </div>
+                                        </div>
+                                    </th>
                                     <td>{order.productName}</td>
                                     <td>{order.price}</td>
                                     <td>{order.location}</td>
                                     <td>{order.number}</td>
+                                    <td>{order.status !== 'paid' ?
+                                        <button className='btn btn-sm btn-primary'>Pay</button>
+                                        : <span className='text-green-400'>paid</span>}</td>
                                     <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={() => setOrderId(order._id)}>Delete</label>
                                     </td>
                                 </tr>
@@ -83,8 +96,8 @@ const MyOrders = () => {
             </div>
             {
                 closeModal && <ConfirmModal
-                itemId = {orderId}
-                handleDeleteItem={handleDeleteOrder}
+                    itemId={orderId}
+                    handleDeleteItem={handleDeleteOrder}
                 ></ConfirmModal>
             }
         </div>

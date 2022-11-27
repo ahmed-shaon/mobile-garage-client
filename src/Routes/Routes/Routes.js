@@ -15,6 +15,7 @@ import Products from "../../Pages/Products/Products/Products";
 import ErrorPage from "../../Pages/Shared/ErrorPage/ErrorPage";
 import SignupSeller from "../../Pages/Signup/SignupSeller";
 import SignupUser from "../../Pages/Signup/SignupUser";
+import AdminRoute from "../AdminRoute/AdminRoute";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
@@ -83,11 +84,11 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/dashboard/allseller',
-                element:<AllSellers></AllSellers>
+                element:<AdminRoute><AllSellers></AllSellers></AdminRoute>
             },
             {
                 path:'/dashboard/allbuyer',
-                element:<AllBuyers></AllBuyers>
+                element:<AdminRoute><AllBuyers></AllBuyers></AdminRoute>
             },
             
         ]
