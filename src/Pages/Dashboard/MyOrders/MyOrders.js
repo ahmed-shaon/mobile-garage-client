@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import Product from '../../Products/Product/Product';
 import ConfirmModal from '../../Shared/ConfirmModal/ConfirmModal';
@@ -74,7 +75,7 @@ const MyOrders = () => {
                                     <th>
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <img src={order.image} alt="Avatar Tailwind CSS Component" />
+                                                <img src={order.image}  alt="productImage"/>
                                             </div>
                                         </div>
                                     </th>
@@ -83,7 +84,7 @@ const MyOrders = () => {
                                     <td>{order.location}</td>
                                     <td>{order.number}</td>
                                     <td>{order.status !== 'paid' ?
-                                        <button className='btn btn-sm btn-primary'>Pay</button>
+                                        <Link to={`/dashboard/payment/${order._id}`} className='btn btn-sm btn-primary'>Pay</Link>
                                         : <span className='text-green-400'>paid</span>}</td>
                                     <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={() => setOrderId(order._id)}>Delete</label>
                                     </td>
