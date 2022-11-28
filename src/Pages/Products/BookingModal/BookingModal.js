@@ -33,7 +33,8 @@ const BookingModal = ({ product, setOpenModal, user, setBook }) => {
                 setOpenModal(false)
             }
             else{
-                toast.error('Already Booked')
+                toast.error('Already Booked');
+                setOpenModal(false);
             }
         })
         .catch(err => console.log(err))
