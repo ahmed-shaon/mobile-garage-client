@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 const Product = ({ product }) => {
     const { user } = useContext(AuthContext);
     const [openModal, setOpenModal] = useState(true);
-    const { _id, modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed, categoryId, userStatus } = product;
+    const { _id, modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed, categoryId, userStatus, status } = product;
     const { ram, storage, color, battery } = product.specificatons;
     const handleWishList = () => {
         const wishProduct = {
@@ -57,12 +57,14 @@ const Product = ({ product }) => {
                         {userStatus === 'verified' && <img className='w-4 h-4' src={verifyIcon} alt="icon" />}
                     </p>
                     <p>Posted Time: <span className='font-bold'>{timeOfPost}</span></p>
+                    <p>Status: {status === 'sold' ? <span className='text-red-400'>Sold</span>
+                    :<sapn className="text-secondary">Unsold</sapn>}</p>
                     <div className="card-actions justify-between items-center">
                         <div className='flex items-center text-[16px] hover:underline hover:bg-gray-300 p-1'>
                             <img className='w-8 h-8' src={heart} alt="" />
                             <button onClick={handleWishList}>Add to Wish List</button>
                         </div>
-                        <label htmlFor="my-modal" className="btn btn-primary">Book Now</label>
+                        <label htmlFor="my-modal" className="btn btn-primary" disabled={status === 'sold'}>Book Now</label>
                     </div>
                     {
                         openModal && <BookingModal

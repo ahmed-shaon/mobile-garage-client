@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 const activeStyle = {
-    textDecoration:'underline'
+    textDecoration: 'underline'
 }
 const Navbar = () => {
     const { user, userLogout } = useContext(AuthContext);
@@ -14,11 +14,14 @@ const Navbar = () => {
             .catch(error => console.log(error))
     }
     const navItem = <>
-        <li><NavLink style={({isActive}) => isActive ? activeStyle : undefined} to="/">Home</NavLink></li>
-        <li><NavLink style={({isActive}) => isActive ? activeStyle : undefined} to="/dashboard">Dashboard</NavLink></li>
+        <li><NavLink className="hover:underline" style={({ isActive }) => isActive ? activeStyle : undefined} to="/">Home</NavLink></li>
+        <li><NavLink className="hover:underline" style={({ isActive }) => isActive ? activeStyle : undefined} to="/blog">Blog</NavLink></li>
         {
-            user?.uid ? <li><button onClick={handleSignout}>Sign out</button></li>
-                : <li><NavLink to='/signin'>Sign in</NavLink></li>
+            user?.uid ? <>
+                <li><NavLink className="hover:underline" style={({ isActive }) => isActive ? activeStyle : undefined} to="/dashboard">Dashboard</NavLink></li>
+                <li className="hover:underline"><button onClick={handleSignout}>Sign out</button></li>
+            </>
+                : <li><NavLink className="hover:underline" to='/signin'>Sign in</NavLink></li>
         }
 
     </>

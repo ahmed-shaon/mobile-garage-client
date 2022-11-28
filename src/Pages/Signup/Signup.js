@@ -8,9 +8,10 @@ import useToken from '../../Hook/useToken';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import Loading from '../Shared/Loading/Loading';
+import { saveUser } from '../../Utilities/Utilities';
 
 const Signup = ({ role, title }) => {
-    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const { createUser, createGoogleUser, updateUserProfile } = useContext(AuthContext);
     const [error, setError] = useState('');
     const [userEmail, setUserEmail] = useState("");
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -33,7 +34,7 @@ const Signup = ({ role, title }) => {
                 const profile ={displayName:data.name};
                 updateUserProfile(profile)
                 .then(res =>{
-                    saveUser(data.email, data.name, role);
+                    saveUser(data.email, data.name, role, setUserEmail);
                 })
                 .catch(err => console.log(err))
             })
@@ -43,32 +44,17 @@ const Signup = ({ role, title }) => {
             })
     }
 
-    const saveUser = async(email, name, type) => {
-        const user = { email, name, type }
-        console.log(user);
-        fetch('http://localhost:5000/users', {
-            method:'POST',
-            headers:{
-                'content-type':'application/json'
-            },
-            body:JSON.stringify(user)
+    const handleGoogleUser = () => {
+        createGoogleUser()
+        .then(res => {
+            const user = res.user;
+            console.log(user);
+            saveUser(user.email, user.displayName, role, setUserEmail);
         })
-        .then(res => res.json())
-        .then(userData => {
-            console.log(userData);
-            if(userData.acknowledged){
-                setUserEmail(email);
-            }
-        })
-        // axios.post("http://localhost:5000/users", user)
-        //     .then(res => {
-        //         console.log(res);
-        //         if (res.data.acknowledged) {                    
-        //             setUserEmail(email);
-        //         }
-        //     })
-        //     .catch(err => console.log(err))
+        .catch(err => console.log(err))
     }
+
+    
 
 
     return (
@@ -109,7 +95,7 @@ const Signup = ({ role, title }) => {
                     role === "user" && <>
                         <div className="divider my-3">Sign in with social accounts</div>
                         <div className='flex justify-around'>
-                            <button><img src={google} alt='google-login' /></button>
+                            <button onClick={handleGoogleUser}><img src={google} alt='google-login' /></button>
                             <button><img src={facebook} alt='facebook-icon' /></button>
                             <button><img src={github} alt='github-login' /></button>
                         </div>

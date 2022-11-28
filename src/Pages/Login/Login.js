@@ -7,12 +7,13 @@ import github from '../../assets/icons/github.svg';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import useToken from '../../Hook/useToken';
 import Loading from '../Shared/Loading/Loading';
+import { saveUser } from '../../Utilities/Utilities';
 
 
 const Login = () => {
     const [error, setError] = useState('');
     const [userEmail, setUserEmail] = useState("");
-    const {userLogin}  = useContext(AuthContext);
+    const {userLogin, createGoogleUser}  = useContext(AuthContext);
     const {register, formState:{errors}, handleSubmit} = useForm();
     const navigate= useNavigate();
     const location = useLocation();
@@ -38,6 +39,18 @@ const Login = () => {
         .catch(error => {
             console.log(error);
             setError(error.message);            
+        })
+    }
+
+    const handleGoogleSignin = () => {
+        createGoogleUser()
+        .then(res => {
+            const user = res.user;
+            console.log(user);
+            saveUser(user.email, user.displayName, 'user', setUserEmail);
+        })
+        .catch(err => {
+            setError(err.message);
         })
     }
     return (
@@ -70,7 +83,7 @@ const Login = () => {
                 <p className='my-8 text-xs'>Don't have an account? <Link to="/signup" className='text-primary'>Sign Up</Link></p>
                 <div className="divider my-3">Sign in with social accounts</div>
                 <div className='flex justify-around'>
-                    <button><img src={google} alt='google-login' /></button>
+                    <button onClick={handleGoogleSignin}><img src={google} alt='google-login' /></button>
                     <button><img src={facebook} alt='facebook-icon' /></button>
                     <button><img src={github} alt='github-login' /></button>
                 </div>
