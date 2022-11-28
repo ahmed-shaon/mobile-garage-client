@@ -6,7 +6,7 @@ const useToken = (email) => {
     const [isTokenLoading, setTokenLoading] = useState(true);
     console.log(email);
     useEffect( () => {
-        fetch(`http://localhost:5000/jwt?email=${email}`)
+        fetch(`https://mobile-garage-server.vercel.app/jwt?email=${email}`)
         .then(res => res.json())
         .then(data => {
             console.log(data);

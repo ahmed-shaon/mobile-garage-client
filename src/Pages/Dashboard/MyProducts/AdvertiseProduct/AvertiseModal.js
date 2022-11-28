@@ -17,7 +17,7 @@ const AvertiseModal = ({product, setProduct}) => {
             categoryId
         }
         console.log(advertiseProduct);
-        axios.post(`http://localhost:5000/advertise?id=${_id}`,advertiseProduct,{
+        axios.post(`https://mobile-garage-server.vercel.app/advertise?id=${_id}`,advertiseProduct,{
             headers:{
                 authorization:`bearer ${localStorage.getItem('accessToken')}`
             }

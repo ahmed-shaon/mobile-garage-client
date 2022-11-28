@@ -3,7 +3,7 @@
 export const saveUser = async(email, name, type ,setUserEmail) => {
     const user = { email, name, type }
     console.log(user);
-    fetch('http://localhost:5000/users', {
+    fetch('https://mobile-garage-server.vercel.app/users', {
         method:'POST',
         headers:{
             'content-type':'application/json'
@@ -17,7 +17,7 @@ export const saveUser = async(email, name, type ,setUserEmail) => {
             setUserEmail(email);
         }
     })
-    // axios.post("http://localhost:5000/users", user)
+    // axios.post("https://mobile-garage-server.vercel.app/users", user)
     //     .then(res => {
     //         console.log(res);
     //         if (res.data.acknowledged) {                    

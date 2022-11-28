@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
             {
                 path:'/category/:id',
                 element:<PrivateRoute><Products></Products></PrivateRoute>,
-                loader: ({params}) => fetch(`http://localhost:5000/category/${params.id}`)
+                loader: ({params}) => fetch(`https://mobile-garage-server.vercel.app/category/${params.id}`)
             },
             {
                 path:'/blog',
@@ -99,7 +99,7 @@ export const router = createBrowserRouter([
             {
                 path:"/dashboard/payment/:id",
                 element:<Payment></Payment>,
-                loader: ({params}) => fetch(`http://localhost:5000/payment/${params.id}`)
+                loader: ({params}) => fetch(`https://mobile-garage-server.vercel.app/payment/${params.id}`)
             }
             
         ]

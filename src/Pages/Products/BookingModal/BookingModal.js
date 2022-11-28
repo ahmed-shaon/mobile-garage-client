@@ -21,7 +21,7 @@ const BookingModal = ({ product, setOpenModal, user, setBook }) => {
             image
         }
         console.log(order);
-        axios.post("http://localhost:5000/order",order,{
+        axios.post("https://mobile-garage-server.vercel.app/order",order,{
             headers:{
                 authorization:`bearer ${localStorage.getItem('accessToken')}`
             }

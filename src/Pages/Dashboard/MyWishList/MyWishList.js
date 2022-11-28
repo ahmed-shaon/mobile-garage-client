@@ -13,7 +13,7 @@ const MyWishList = () => {
     const { data: wishProducts = [], isLoading, refetch } = useQuery({
         queryKey: ["wishlist"],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/wishlist?email=${user?.email}`, {
+            const res = await fetch(`https://mobile-garage-server.vercel.app/wishlist?email=${user?.email}`, {
                 headers: {
                     authorization: `bearer ${localStorage.getItem("accessToken")}`
                 }
@@ -28,7 +28,7 @@ const MyWishList = () => {
     }
 
     const handleDeleteWishProduct = id => {
-        fetch(`http://localhost:5000/wishlist/${id}`,{
+        fetch(`https://mobile-garage-server.vercel.app/wishlist/${id}`,{
             method:'DELETE',
             headers:{
                 authorization:`bearer ${localStorage.getItem('accessToken')}`

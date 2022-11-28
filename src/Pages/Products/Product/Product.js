@@ -20,7 +20,7 @@ const Product = ({ product }) => {
             email: user?.email,
             categoryId
         }
-        axios.post(`http://localhost:5000/wishlist`, wishProduct, {
+        axios.post(`https://mobile-garage-server.vercel.app/wishlist`, wishProduct, {
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
             }
