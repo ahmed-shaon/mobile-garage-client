@@ -2,36 +2,37 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import BookingModal from '../BookingModal/BookingModal';
 import heart from '../../../assets/icons/heart.png';
-import heart2 from '../../../assets/icons/heart.svg';
+import verifyIcon from '../../../assets/icons/verify.png';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const Product = ({ product }) => {
     const { user } = useContext(AuthContext);
     const [openModal, setOpenModal] = useState(true);
-    const { _id, modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed } = product;
+    const { _id, modelName, image, originalPrice, resellPrice, location, description, timeOfPost, sellerName, timeUsed, categoryId, userStatus } = product;
     const { ram, storage, color, battery } = product.specificatons;
     const handleWishList = () => {
         const wishProduct = {
-            productId:_id,
-            productName:modelName,
+            productId: _id,
+            productName: modelName,
             image,
-            price:resellPrice
+            price: resellPrice,
+            email: user?.email,
+            categoryId
         }
-        axios.post(`http://localhost:5000/wishlist`, wishProduct,{
-            headers:{
-                authorization:`bearer ${localStorage.getItem('accessToken')}`
+        axios.post(`http://localhost:5000/wishlist`, wishProduct, {
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(res => {
-            console.log(res.data);
-            if(res.data.acknowledged){
-                toast.success('Added to wish list!!');
-            }
-            else{
-                toast.error(res.data.message);
-            }
-        })
+            .then(res => {
+                if (res.data.acknowledged) {
+                    toast.success('Added to wish list!!');
+                }
+                else {
+                    toast.error(res.data.message);
+                }
+            })
     }
     return (
         <div>
@@ -50,7 +51,11 @@ const Product = ({ product }) => {
                     <p>Original Price: <span className='font-bold'>${originalPrice}</span></p>
                     <p>Location: <span className='font-bold'>{location}</span></p>
                     <p>Time Used: <span className='font-bold'>{timeUsed} months</span></p>
-                    <p>Seller Name: <span className='font-bold'>{sellerName}</span></p>
+                    <p className='flex item-center'>Seller Name: <span className='font-bold'>
+                        {sellerName}
+                    </span>
+                        {userStatus === 'verified' && <img className='w-4 h-4' src={verifyIcon} alt="icon" />}
+                    </p>
                     <p>Posted Time: <span className='font-bold'>{timeOfPost}</span></p>
                     <div className="card-actions justify-between items-center">
                         <div className='flex items-center text-[16px] hover:underline hover:bg-gray-300 p-1'>

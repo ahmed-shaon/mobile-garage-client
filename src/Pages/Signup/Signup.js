@@ -30,11 +30,9 @@ const Signup = ({ role, title }) => {
         setError("");
         createUser(data.email, data.password)
             .then(res => {
-                console.log("user created");
                 const profile ={displayName:data.name};
                 updateUserProfile(profile)
                 .then(res =>{
-                    console.log("user updated");
                     saveUser(data.email, data.name, role);
                 })
                 .catch(err => console.log(err))
@@ -62,8 +60,6 @@ const Signup = ({ role, title }) => {
                 setUserEmail(email);
             }
         })
-
-        console.log('api called');
         // axios.post("http://localhost:5000/users", user)
         //     .then(res => {
         //         console.log(res);

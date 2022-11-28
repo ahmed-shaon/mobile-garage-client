@@ -41,16 +41,35 @@ const AllSellers = () => {
                 // setCloseModal(true);
             })
     }
+
+    const handleSellerVerification = email => {
+        console.log(email)
+        fetch(`http://localhost:5000/users/${email}`, {
+            method:'PUT',
+            headers:{
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if(data.modifiedCount>0){
+                toast.success("User Verified!");
+                refetch();
+            }
+        })
+    }
     return (
         <div>
-            <h2 className='text-3xl font-bold text-center my-8'>All Sellers</h2>
-            <div className="overflow-x-auto">
+            <h2 className='text-3xl font-bold text-center mt-12'>All Sellers</h2>
+            <div className="overflow-x-auto p-8">
                 <table className="table w-full">
                     <thead>
                         <tr>
                             <th></th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Varification Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -61,7 +80,11 @@ const AllSellers = () => {
                                     <th>{i + 1}</th>
                                     <td>{seller.name}</td>
                                     <td>{seller.email}</td>
-                                    <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={()=> setSellerId(seller._id)}>Delete</label>
+                                    <td>{seller.userStatus !== 'verified' ? <button className='btn btn-sm btn-primary' onClick={() => handleSellerVerification(seller.email)}>verify</button>
+                                    :<span className='text-secondary'>Verified</span>}</td>
+                                    <td><label htmlFor="confirm-modal" className="btn btn-sm btn-error" onClick={()=> {
+                                        setSellerId(seller._id)
+                                        setCloseModal(true)}}>Delete</label>
                                     </td>
                                 </tr>
 

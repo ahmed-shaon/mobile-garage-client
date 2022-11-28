@@ -36,7 +36,7 @@ const AddProduct = () => {
                         timeOfPost: date,
                         image: imgData.data.url,
                         description: data.description,
-                        email: user.email,
+                        email: user?.email,
                         specificatons:{
                             ram:data.ram,
                             storage:data.storage,
