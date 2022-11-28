@@ -26,8 +26,8 @@ const blogs = [
 ]
 const Blog = () => {
     return (
-        <div className='my-12 px-8 lg:px-20'>
-            <h2 className='text-3xl'>Welcome to blog</h2>
+        <div className='my-12 px-4 lg:px-8'>
+            <h2 className='text-3xl py-4'>Welcome to blog</h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
                 {
                     blogs.map(blog => <BlogItem

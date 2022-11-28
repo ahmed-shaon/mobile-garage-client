@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import useToken from '../../Hook/useToken';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
-import Loading from '../Shared/Loading/Loading';
 import { saveUser } from '../../Utilities/Utilities';
 
 const Signup = ({ role, title }) => {
@@ -31,12 +30,12 @@ const Signup = ({ role, title }) => {
         setError("");
         createUser(data.email, data.password)
             .then(res => {
-                const profile ={displayName:data.name};
+                const profile = { displayName: data.name };
                 updateUserProfile(profile)
-                .then(res =>{
-                    saveUser(data.email, data.name, role, setUserEmail);
-                })
-                .catch(err => console.log(err))
+                    .then(res => {
+                        saveUser(data.email, data.name, role, setUserEmail);
+                    })
+                    .catch(err => console.log(err))
             })
             .catch(err => {
                 setError(err.message);
@@ -46,15 +45,15 @@ const Signup = ({ role, title }) => {
 
     const handleGoogleUser = () => {
         createGoogleUser()
-        .then(res => {
-            const user = res.user;
-            console.log(user);
-            saveUser(user.email, user.displayName, role, setUserEmail);
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                const user = res.user;
+                console.log(user);
+                saveUser(user.email, user.displayName, role, setUserEmail);
+            })
+            .catch(err => console.log(err))
     }
 
-    
+
 
 
     return (

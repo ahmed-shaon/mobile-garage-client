@@ -16,7 +16,7 @@ const Category = () => {
         return <Loading></Loading>
     }
     return (
-        <div className='my-12 lg:mt-24 px-4 lg:px-20'>
+        <div className='my-8 lg:mt-16 px-4 lg:px-8'>
             <h2 className='text-2xl font-bold text-center my-8'>Categories</h2>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
                 {

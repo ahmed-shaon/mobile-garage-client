@@ -36,12 +36,12 @@ const Product = ({ product }) => {
     }
     return (
         <div>
-            <div className="card card-compact bg-base-100 shadow-xl">
+            <div className="card card-compact bg-base-100 shadow-xl text-xs">
                 <figure><img className='w-full h-96' src={image} alt="mobile" /></figure>
                 <div className="card-body text-lg">
                     <h2 className="card-title">{modelName}</h2>
                     <p>{description}</p>
-                    <div className='grid grid-cols-2 lg:grid-cols-4'>
+                    <div className='grid grid-cols-2 lg:grid-cols-2'>
                         <p>RAM: <span className='font-bold'>{ram}</span></p>
                         <p>Storage: <span className='font-bold'>{storage}</span></p>
                         <p>Color: <span className='font-bold'>{color}</span></p>
@@ -64,7 +64,7 @@ const Product = ({ product }) => {
                             <img className='w-8 h-8' src={heart} alt="" />
                             <button onClick={handleWishList}>Add to Wish List</button>
                         </div>
-                        <label htmlFor="my-modal" className="btn btn-primary" disabled={status === 'sold'}>Book Now</label>
+                        <label htmlFor="my-modal" className="btn btn-primary" disabled={status === 'sold'} onClick={() => setOpenModal(true)}>Book Now</label>
                     </div>
                     {
                         openModal && <BookingModal

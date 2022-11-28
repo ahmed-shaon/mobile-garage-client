@@ -3,7 +3,7 @@ import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 const CoustmerFeedBack = () => {
     return (
-        <div className='px-4 lg:px-20 my-12'>
+        <div className='px-4 lg:px-8 my-12'>
             <h2 className='text-3xl font-bold text-center mb-8'>User Feedback About Us</h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 relative'>
                 <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 shadow-xl">
@@ -44,8 +44,8 @@ const CoustmerFeedBack = () => {
                         <p>Your service quality is so much good. I love the way you take your customer. Keep it up</p>
                     </div>
                 </div>
-                <p className='absolute text-xl left-4 top-1/2 bg-gray-300 p-2 hidden lg:flex'>❮</p>
-                <p className='absolute text-xl right-4 top-1/2 bg-gray-300 p-2 hidden lg:flex'>❯</p>
+                <p className='absolute text-xl left-0 top-1/2 bg-gray-300 p-2 hidden lg:flex'>❮</p>
+                <p className='absolute text-xl right-0 top-1/2 bg-gray-300 p-2 hidden lg:flex'>❯</p>
             </div>
         </div>
     );

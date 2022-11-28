@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
@@ -7,12 +7,22 @@ import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [formError, setFormError] = useState("");
+    const [loading, setLoading] = useState(false);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const imageHostKey = process.env.REACT_APP_hostApiKey;
 
     const handleAddProduct = data => {
+        setFormError("");
         const image = data.img[0];
+        const check = image.name.split(".")[1];
+        console.log(check);
+        if ((check !== "jpg") && (check !== 'jpeg') && (check !== 'png') && (check !== 'webp')) {
+            setFormError("Your image formate should be jpg, jpeg, png, webp");
+            return;
+        }
+        setLoading(true);
         const formData = new FormData();
         formData.append('image', image);
         fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
@@ -37,29 +47,31 @@ const AddProduct = () => {
                         image: imgData.data.url,
                         description: data.description,
                         email: user?.email,
-                        specificatons:{
-                            ram:data.ram,
-                            storage:data.storage,
-                            color:data.color,
-                            battery:data.battery
+                        specificatons: {
+                            ram: data.ram,
+                            storage: data.storage,
+                            color: data.color,
+                            battery: data.battery
                         }
                     }
+                    console.log(product)
                     fetch('http://localhost:5000/products', {
-                        method:'POST',
-                        headers:{
-                            'content-type':'application/json',
-                            authorization:`bearer ${localStorage.getItem('accessToken')}`
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                            authorization: `bearer ${localStorage.getItem('accessToken')}`
                         },
-                        body:JSON.stringify(product)
+                        body: JSON.stringify(product)
                     })
-                    .then(res => res.json())
-                    .then(productData => {
-                        console.log(productData);
-                        if(productData.acknowledged){
-                            toast.success('Product uploaded sucessfully');
-                            navigate('/dashboard/myproducts');
-                        }
-                    })
+                        .then(res => res.json())
+                        .then(productData => {
+                            console.log(productData);
+                            if (productData.acknowledged) {
+                                toast.success('Product uploaded sucessfully');
+                                navigate('/dashboard/myproducts');
+                                setLoading(false);
+                            }
+                        })
                 }
             })
 
@@ -172,7 +184,7 @@ const AddProduct = () => {
                             <span className="label-text">Name</span>
                             {errors.name && <p role="alert" className="absolute top-2 right-0 text-red-400 text-xs">*{errors.name?.message}</p>}
                         </label>
-                        <input {...register("name", { required: "Required Field" })} type="text" placeholder="Your Name" className="input input-bordered w-full " />
+                        <input {...register("name", { required: "Required Field" })} type="text" defaultValue={user?.displayName} placeholder="Your Name" className="input input-bordered w-full " readOnly />
                     </div>
                     <div className="form-control w-full relative">
                         <label className="label">
@@ -192,19 +204,24 @@ const AddProduct = () => {
                         <label className="label">
                             <span className="label-text">Upload A Product Image</span>
                             {errors.img && <p role="alert" className="absolute top-2 right-0 text-red-400 text-xs">*{errors.img?.message}</p>}
+                            {formError && <p role="alert" className="absolute top-6 right-0 text-red-400 text-xs">*{formError}</p>}
                         </label>
                         <input {...register("img", { required: "Required Field" })} type="file" placeholder="image" className="input input-bordered w-full " />
                     </div>
                 </div>
                 <div className="form-control my-2 relative">
                     <label className="label">
-                        <span className="label-text">Description About Specification of Mobile</span>
+                        <span className="label-text">Description About Additional Information</span>
                         {errors.description && <p role="alert" className="absolute top-2 right-0 text-red-400 text-xs">*{errors.description?.message}</p>}
                     </label>
                     <textarea {...register("description", { required: "Required Field" })} className="textarea textarea-bordered h-24" placeholder="Description about mobile"></textarea>
                 </div>
                 <div className='flex justify-center my-4'>
-                    <input type="submit" value="Submit" className='btn btn-primary px-8' />
+                    {
+                        loading ? <button className="btn btn-primary loading">Add</button>
+                            :
+                            <input type="submit" value="Add" className='btn btn-primary px-8' />
+                    }
                 </div>
             </form>
         </div>

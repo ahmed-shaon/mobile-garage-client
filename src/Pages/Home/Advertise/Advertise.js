@@ -16,9 +16,9 @@ const Advertise = () => {
         return <Loading></Loading>
     }
     return (
-        <div className='my-12 lg:my-24'>
+        <div className='my-12 lg:my-16'>
             {
-                advertiseProducts.length > 0 && <div className='px-4 lg:px-20'>
+                advertiseProducts.length > 0 && <div className='px-4 lg:px-8'>
                     <h2 className='text-3xl fond-bold text-secondary text-center my-8'>Advertise of Products</h2>
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
                         {

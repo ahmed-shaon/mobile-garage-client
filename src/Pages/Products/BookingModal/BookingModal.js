@@ -32,6 +32,9 @@ const BookingModal = ({ product, setOpenModal, user, setBook }) => {
                 toast.success('Your Booking is confirmed.');
                 setOpenModal(false)
             }
+            else{
+                toast.error('Already Booked')
+            }
         })
         .catch(err => console.log(err))
     }
@@ -83,7 +86,7 @@ const BookingModal = ({ product, setOpenModal, user, setBook }) => {
                             <input {...register("number", { required: 'Field Required' })} type="text" name="number" placeholder="Your Nubmer" className="input input-bordered w-full " />
                         </div>
                         <div className='my-4 flex justify-center'>
-                            <input type="submit" className='btn btn-primary mr-2 disabled' value="Submit" />
+                            <input type="submit" className='btn btn-primary mr-2 disabled' value="Order" />
                             <label htmlFor="my-modal" className="btn btn-error">Cancle</label>
                         </div>
                     </form>
